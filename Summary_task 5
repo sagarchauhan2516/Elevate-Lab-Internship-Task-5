@@ -1,0 +1,43 @@
+Task 5 - Network Traffic Analysis Report 
+
+Objective: Capture and analyze live network packets to identify basic protocols and traffic types.
+
+1. Capture Details:
+   Tool Used: Wireshark
+   Capture File Name: my_network_capture.pcap
+   Active Network Interface: [e.g., eth , wlan ]
+   Traffic Generation Activities: Browsed google.com, youtube.com
+
+2. Identified Protocols
+
+   Protocol 1: DNS (Domain Name System
+          Description:  Used to resolve human-readable domain names (e.g., google.com) into machine-readable IP addresses (e.g., 142.25 .19 .11 ).
+          Example Packet Detail (from your capture): 
+             Frame X: Source IP -> Destination IP, Protocol: DNS, Info: Standard query A google.com
+             Frame Y: Source IP -> Destination IP, Protocol: DNS, Info: Standard query response A 142.25 .19 .11 
+          Observation:  I saw DNS queries being sent out and responses coming back whenever I typed a new website into the browser.
+
+      Protocol 2: HTTP (Hypertext Transfer Protocol) 
+          Description:  The foundation of data communication for the World Wide Web, used to retrieve web pages.
+          Example Packet Detail (from your capture - if you visited non-HTTPS site like example.com): 
+             Frame Z: Source IP -> Destination IP, Protocol: HTTP, Info: GET / HTTP/1.1
+             Frame A: Source IP -> Destination IP, Protocol: HTTP, Info: HTTP/1.1 2   OK
+          Observation:  I could see my browser requesting web pages and the server responding with the page content. (Note: If all sites are HTTPS, you'll primarily see TLSv1.2/3 for encrypted traffic instead of clear HTTP).
+
+      Protocol 3: TCP (Transmission Control Protocol) 
+          Description:  A core internet protocol that provides reliable, ordered, and error-checked delivery of a stream of bytes between applications. Most higher-level protocols like HTTP, DNS, and SSH use TCP.
+          Example Packet Detail (from your capture - look for SYN/ACK flags): 
+             Frame B: Source IP -> Destination IP, Protocol: TCP, Info: [SYN] Seq=  Win=6424  Len=  MSS=146  SACK_PERM=1 TSval=1234 TSecr=  WS=128
+             Frame C: Source IP -> Destination IP, Protocol: TCP, Info: [SYN, ACK] Seq=  Ack=1 Win=6516  Len=  MSS=146  SACK_PERM=1 TSval=5678 TSecr=1234 WS=256
+          Observation:  I observed the three-way handshake (SYN, SYN-ACK, ACK) at the beginning of connections, demonstrating how reliable connections are established.
+
+      Protocol 4: ICMP (Internet Control Message Protocol) 
+          Description:  Used for diagnostic functions and error reporting by network devices, commonly seen with `ping` commands.
+          Example Packet Detail (from your capture if you pinged): 
+             Frame D: Source IP -> Destination IP, Protocol: ICMP, Info: Echo (ping) request id=1 seq=1
+             Frame E: Source IP -> Destination IP, Protocol: ICMP, Info: Echo (ping) reply id=1 seq=1
+          Observation:  My `ping` commands generated ICMP request and reply packets.
+
+ 3. Conclusion: 
+   This exercise successfully demonstrated how Wireshark can be used to capture and analyze live network traffic. By applying filters, I was able to identify fundamental protocols such as DNS, HTTP/TLS, TCP, and ICMP, providing insights into how applications communicate over a network.
+
